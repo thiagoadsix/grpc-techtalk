@@ -1,0 +1,28 @@
+{
+  "name": "grpc",
+  "version": "1.0.0",
+  "description": "Project to explain how gRPC works.",
+  "main": "index.ts",
+  "scripts": {
+    "build": "rimraf ./build && tsc",
+    "server": "npm run build && node build/server.js",
+    "list-card": "node build/functions/list-card.js",
+    "add-card": "node build/functions/add-card.js",
+    "remove-card": "node build/functions/remove-card.js",
+    "update-card": "node build/functions/update-card.js"
+  },
+  "keywords": [
+    "grpc"
+  ],
+  "author": "Thiagueira",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.7.23",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.7.1",
+    "@grpc/proto-loader": "^0.7.3"
+  }
+}

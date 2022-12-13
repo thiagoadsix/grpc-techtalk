@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+service CardService {
+  rpc Add (Card) returns (Empty) {}
+  rpc List (Empty) returns (stream Card) {}
+  rpc Remove (stream ById) returns (RemoveResponse) {}
+  rpc Update (stream Card) returns (stream StatusResponse) {}
+}
+
+message Empty {}
+
+message Card {
+  string id = 1;
+  string companyId = 2;
+  string name = 3;
+  string category = 4;
+}
+
+message ById {
+  string id = 1;
+}
+
+message RemoveResponse {
+  bool removed = 1;
+}
+
+message StatusResponse {
+  string status = 1;
+}
