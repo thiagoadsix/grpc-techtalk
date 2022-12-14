@@ -9,7 +9,9 @@
     "list-card": "node build/functions/list-card.js",
     "add-card": "node build/functions/add-card.js",
     "remove-card": "node build/functions/remove-card.js",
-    "update-card": "node build/functions/update-card.js"
+    "update-card": "node build/functions/update-card.js",
+    "compile:js": "protoc-gen-grpc --proto_path=src/protos --js_out=import_style=commonjs,binary:src/pb/js --grpc_out=grpc_js:src/pb/js ./src/protos/card.proto",
+    "compile:go": "protoc --go_out=./src/pb --go-grpc_out=./src/pb src/protos/card.proto"
   },
   "keywords": [
     "grpc"
@@ -18,6 +20,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^18.7.23",
+    "protoc-gen-grpc": "^2.0.3",
     "rimraf": "^3.0.2",
     "typescript": "^4.8.4"
   },
