@@ -1,17 +1,31 @@
-import { client } from "../client"
+import { client } from "../client";
+import { CardI } from "../types/card";
+import { sleepFor } from "../utils/sleep";
 
-const call = client.update()
+const call = client.update();
 
-call.write({ id: "1", companyId: "1", name: "Tools", category: "Purple" })
+const updateFirsCard = () => {
+  const card: CardI = { id: "1", companyId: "1", name: "Tools", category: "Purple" };
+  console.log("Updating card for the first time...", card);
+  call.write(card);
+
+  sleepFor(2500);
+};
+
+updateFirsCard();
 
 call.on("data", (data: any) => {
-  console.log('Updating card for the first time...', data)
+  console.log("Card updated", data);
 
-  if (data.status === "UPDATED") {
-    console.log('Updating card for the second time...', data)
+  const card: CardI = { id: "1", companyId: "1", name: "Tools", category: "Brown" };
+  console.log("Updating card for the second time...", card);
+  call.write(card);
 
-    call.write({ id: "1", companyId: "1", name: "Tools", category: "Brown" })
+  sleepFor(2500);
+  console.log("Card updated", data);
+});
 
-    call.end()
-  }
-})
+call.on("end", () => {
+  sleepFor(2500);
+  console.log("\nTask ended on client.");
+});

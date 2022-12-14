@@ -6,4 +6,4 @@ var count = 0;
 stream.on('data', function (data) {
     console.log("".concat(++count, " - ").concat(JSON.stringify(data)));
 });
-stream.on('end', function () { return console.log('\nTask ended on client.'); });
+stream.on('end', function () { return console.log('\nTask ended.'); });

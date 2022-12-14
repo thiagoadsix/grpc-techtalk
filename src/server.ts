@@ -5,12 +5,13 @@ import {
 } from "@grpc/grpc-js";
 import { loadSync } from "@grpc/proto-loader";
 import { join } from "path";
-import { sleep } from "./utils/sleep";
+import { CardI } from "./types/card";
+import { sleepAsync, sleepFor } from "./utils/sleep";
 
 const packageDefinition = loadSync(join(__dirname, "../src/protos/card.proto"));
 const proto = loadPackageDefinition(packageDefinition) as any;
 
-const cards = [
+const cards: CardI[] = [
   {
     id: "1",
     companyId: "1",
@@ -31,7 +32,7 @@ const cards = [
   },
 ];
 
-let card: { id: string; companyId: string; name: string; category: string };
+let card: CardI;
 
 const server = new Server();
 
@@ -40,7 +41,7 @@ async function list(call: any) {
 
   for (const card of cards) {
     call.write(card);
-    await sleep(2500);
+    await sleepAsync(2500);
   }
 
   console.log("Call ended on server. \n");
@@ -58,6 +59,7 @@ function remove(call: any, callback: any) {
 
   call.on("data", (data: any) => {
     console.log("server -> removing card: ", JSON.stringify(data));
+    sleepFor(2500);
 
     cards.splice(
       cards.findIndex((card) => card.id === data.id),
@@ -74,7 +76,7 @@ function update(call: any) {
   console.log("Client calling UPDATE from the server...");
 
   call.on("data", (data: any) => {
-    console.log("server -> data", JSON.stringify(data));
+    console.log("Updating card...", JSON.stringify(data));
 
     const cardIndex = cards.findIndex((card) => card.id === data.id);
     card = Object.assign({}, cards[cardIndex], { ...data });
@@ -84,6 +86,7 @@ function update(call: any) {
   });
 
   call.write({ status: "UPDATED" });
+  sleepFor(2500);
 
   call.end();
 }

@@ -88,7 +88,7 @@ function list(call) {
                     if (!(_i < cards_1.length)) return [3 /*break*/, 4];
                     card_1 = cards_1[_i];
                     call.write(card_1);
-                    return [4 /*yield*/, (0, sleep_1.sleep)(2500)];
+                    return [4 /*yield*/, (0, sleep_1.sleepAsync)(2500)];
                 case 2:
                     _a.sent();
                     _a.label = 3;
@@ -113,6 +113,7 @@ function remove(call, callback) {
     console.log("Client calling REMOVE from the server...");
     call.on("data", function (data) {
         console.log("server -> removing card: ", JSON.stringify(data));
+        (0, sleep_1.sleepFor)(2500);
         cards.splice(cards.findIndex(function (card) { return card.id === data.id; }), 1);
         console.log("server -> quantity cards: ", JSON.stringify(cards.length));
     });
@@ -121,13 +122,14 @@ function remove(call, callback) {
 function update(call) {
     console.log("Client calling UPDATE from the server...");
     call.on("data", function (data) {
-        console.log("server -> data", JSON.stringify(data));
+        console.log("Updating card...", JSON.stringify(data));
         var cardIndex = cards.findIndex(function (card) { return card.id === data.id; });
         card = Object.assign({}, cards[cardIndex], __assign({}, data));
         cards[cardIndex] = card;
         console.log(JSON.stringify(card));
     });
     call.write({ status: "UPDATED" });
+    (0, sleep_1.sleepFor)(2500);
     call.end();
 }
 server.addService(proto.CardService.service, {
